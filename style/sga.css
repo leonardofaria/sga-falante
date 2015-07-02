@@ -1,0 +1,172 @@
+/*
+
+	base.css
+	layout básico das aplicações do www-gexdiv
+	leonardo faria - leonardo.coelho@previdencia.gov.br
+
+ */
+
+@import url("reset.css");
+
+body, div, ul {
+	margin: 0;
+	padding: 0;
+}
+body {
+	background: #ccc;
+	font: 80%/200% "Helvetica Neue", helvetica, arial;
+	text-align: center;
+}
+textarea {
+	font-family: "Helvetica Neue", helvetica, arial;
+}
+fieldset p {
+	margin: 0;
+}
+hr {
+	border:none;
+	color: #ccc;
+	background: #ccc;
+	height:1px;
+}
+
+#body {
+	margin: 0 auto 0;
+	width: 950px;
+	text-align: left;
+}
+
+
+#header {
+	background: #009FC6;
+	border-bottom: 2px solid #145969;
+	color: #fff;
+	padding: 10px;
+}
+#header h1 {
+	color: #000;
+	margin: 5px 0 5px 0;
+}
+
+#header a, #header a:visited {
+	color: #fff;
+	font-weight: bold;
+}
+
+#menu, #menu ul {
+	border-top: 2px solid #145969;
+	background: url('bg_menu.jpg') left bottom repeat-x;
+	margin: 10px -10px -10px -10px;
+	position: relative;
+	z-index: 300;
+}
+*+html #menu { /* hack para IE */
+	margin-bottom: -12px;
+}
+#menu a, #menu li a, #menu li a:visited {
+	color: #022d3f;
+	display: block;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: #fff 0px 1px 0px;
+}
+#menu a:hover {
+	color: #022d3f;
+}
+#menu li {
+	border-right: 1px solid #ccc;
+	display: inline;
+	float: left;
+	padding: 5px 9px;
+	position: relative;
+}
+#menu li:hover {
+	background: url('bg_menu.gif') left bottom repeat-x #e7eaea;
+}
+#menu ul {
+	border: 0;
+	display: none;
+	position: absolute;
+	margin: -5px -9px;
+	top: 41px;
+	width: 140px;
+}
+#menu ul li {
+	background: url('bg_menu.jpg') left bottom repeat-x;
+	border-right: 0;
+	display: block;
+	width: 122px;
+}
+#menu li ul a {
+	height: auto;
+	float: left;
+}
+#menu ul ul {
+	top: auto;
+}
+#menu li:hover ul ul, #menu li:hover ul ul ul, #menu li:hover ul ul ul ul {
+	display: none;
+}
+#menu li:hover ul, #menu li li:hover ul, #menu li li li:hover ul, #menu li li li li:hover ul {
+	display: block;
+}
+
+
+#content {
+	background: url('../img/bg_content.jpg') repeat-x #fff;
+	padding: 10px;
+}
+#content a {
+	color: #009FC6;
+	font-weight: bold;
+}
+
+#footer {
+	background: url('../img/bg_footer.jpg') repeat-x #ccc;
+	clear: both;
+	color: #666;
+	font-size: 90%;
+	padding: 5px;
+	text-align: right;
+}
+#footer a, #footer a:visited {
+	color: #666;
+	font-weight: bold;
+}
+#footer a:hover {
+	color: #000;
+}
+
+/* mensagens de comunicação com o usuário */
+.notice, .error, .warning, .info {
+	font-weight: bold;
+	margin: 10px;
+	padding: 5px;
+}
+.notice {
+	background: #e2f9e3;
+	border: 2px solid #9c9;
+	color: #060
+}
+.error {
+	background: #fcc;
+	border: 2px solid #c00;
+	color: #c00
+}
+.warning {
+	background: #ffc;
+	border: 2px solid #dd0;
+	color: #000
+}
+.info {
+	background: #ebf5f8;
+	border: 2px solid #82c2d4;
+	color: #000
+}
+
+/* otimizações para impressão */
+@media print {
+	body { background: #fff; }
+	#content { width: 100%; }
+	#actions, .hide { display: none; }
+}

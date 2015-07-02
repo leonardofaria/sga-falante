@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>SGA Falante</title>
+	<link rel="stylesheet" href="style/sga.css" type="text/css" />
+	<script type="text/javascript" src="js/jquery-1.6.1.min.js"></script>
+	<script type="text/javascript" src="js/cookie.js"></script>
+	<script type="text/javascript">
+		var current = "";
+
+		function update() {
+			$("#content").css("min-height", ($(window).height() - $("#header").height() - $("#footer").height() - 58));
+			$('#holder').load('cache.php?ip=' + $("#ip").val(), function(response) {
+				var senha = $("#senha_atual font").html(); // obtem a senha atual
+				if (current != senha) {
+					current = senha;
+					playSound(senha);
+				}
+			});
+		}
+
+		function playSound(senha){ // quebra a senha e reproduz os sons
+			s = senha.split("");
+			var setor = s[0] + ".wav";
+			var num = s[1] + s[2] + s[3] + s[4] + ".wav";
+
+			if ($("#services").val() != "") {
+				if($("#services").val().indexOf(s[0]) > -1) {
+					$("#senha").html(senha);
+					$("#content").prepend('<embed src="sounds/' + setor.toLowerCase() + '" autostart="true" hidden="true">');
+					setTimeout(function() { $("#content").prepend('<embed src="sounds/' + num + '" autostart="true" hidden="true">'); }, 800);
+				}
+			} else {
+				$("#senha").html(senha);
+				$("#content").prepend('<embed src="sounds/' + setor.toLowerCase() + '" autostart="true" hidden="true">');
+				setTimeout(function() { $("#content").prepend('<embed src="sounds/' + num + '" autostart="true" hidden="true">'); }, 800);
+			}
+		}
+
+		function exit(e) { // via http://www.openjs.com/scripts/events/exit_confirmation.php
+			if(!e) e = window.event;
+			e.cancelBubble = true; // ie
+			e.returnValue = 'Se você sair do SGA Falante, as senhas não serão mais pronunciadas. Deseja continuar?';
+			if (e.stopPropagation) { // firefox
+				e.stopPropagation();
+				e.preventDefault();
+			}
+		}
+
+		function sendStats(){
+			var data = 'servidor=' + w3cookies.read('ip');
+	        $.ajax({url: "stats.php", type: "POST", data: data});
+		}
+
+		window.onbeforeunload=exit;
+
+		$(document).ready(function(){
+			$.ajaxSetup ({ cache: false });
+
+			window.setInterval('update()', 3000);
+
+			// cookies para que você não precise redefinir o IP e o serviços todo dia
+			$('#ip').change(function(){ w3cookies.create('ip',$(this).val(),365); sendStats(); });
+			if (w3cookies.read('ip') != undefined) { $('#ip').val(w3cookies.read('ip')); sendStats(); }
+			$('#services').change(function(){ w3cookies.create('servicos',$(this).val(),365); });
+			if (w3cookies.read('servicos') != undefined) { $('#services').val(w3cookies.read('servicos')); }
+		});
+
+	</script>
+
+	<style type="text/css">
+		#header form { margin: 5px auto 0; width: 630px; }
+		#header label { float: left; font-weight: bold; padding-right: 5px; text-align: right; width: 240px; }
+		#header br { clear: both; }
+		#header form { margin: 5px auto 0; width: 630px; }
+		#content ul { list-style: disc; margin-left: 17px; }
+		#content object { display: none }
+		#content #holder { margin: 0; padding: 0 }
+	</style>
+
+	</head>
+<body>
+
+<div id="body">
+	<div id="header">
+		<h1>SGA Falante</h1>
+
+		<p>Use esse aplicativo para que o SGA possa dizer a senha recém-chamada. É pra ninguém ficar dormindo.</p>
+
+		<form>
+			<label for="ip">IP do servidor SGA</label>
+			<input type="text" placeholder="IP do servidor SGA" size="20" id="ip" /><br/>
+			<label for="services">Serviços</label>
+			<input type="text" placeholder="Serviços" size="20" id="services" />
+		</form>
+	</div>
+
+	<div id="content">
+		<h2>Instruções</h2>
+		<ul>
+			<li>Use esse aplicativo minimizado no computador que possui o painel do SGA;</li>
+			<li>Defina acima o IP do seu servidor SGA. Exemplo: 10.32.106.205;</li>
+			<li>Opcional: defina quais senhas serão pronunciadas de acordo com a letra do serviço. Ex.: se você deseja que somente as senhas da perícia médica sejam chamadas e a letra das senhas desse serviço é D, escreva no campo serviço D. Você pode combinar várias letras, como ABDEV, mas pode também deixar esse campo em branco, o que fará com que todas as senhas sejam faladas.</li>
+		</ul>
+
+		<h3>Última senha chamada em toda APS</h3>
+ 		<span id="holder"></span>
+
+		<h3>Última senha chamada por esse monitor</h3>
+		<span id="senha"></span>
+	</div>
+
+	<div id="footer">
+		Conheça outras utilidades: <a href="/bau" title="armazene e compartilhe arquivos com colegas do INSS">Baú de Arquivos</a> - <a href="/busca-servidor" title="localize servidores do INSS">Busca Servidor</a> - <a href="/sabitudo" title="documentação online do SABI">SABI Tudo</a> - Criado na <a href="http://www-gexdiv">GEX Divinópolis</a>
+	</div>
+</div>
+</body>
+</html>
